@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.azimolabs.dynamicgradient.DynamicGradientRecyclerView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/dgrvMessages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:topGradientColor="#008577"
+        app:bottomGradientColor="#3EC4FE"/>
+
