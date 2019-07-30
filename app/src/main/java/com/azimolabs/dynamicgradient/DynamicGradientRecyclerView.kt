@@ -1,10 +1,10 @@
 package com.azimolabs.dynamicgradient
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.res.getColorOrThrow
 import androidx.recyclerview.widget.RecyclerView
 import com.azimolabs.dynamicgradient.utils.PositionedColorGenerator
 
@@ -20,8 +20,8 @@ class DynamicGradientRecyclerView(
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.DynamicGradientRecyclerView)
         try {
             positionedColorGenerator = PositionedColorGenerator(
-                Color.parseColor(typedArray.getString(R.styleable.DynamicGradientRecyclerView_topGradientColor)),
-                Color.parseColor(typedArray.getString(R.styleable.DynamicGradientRecyclerView_bottomGradientColor))
+                typedArray.getColorOrThrow(R.styleable.DynamicGradientRecyclerView_topGradientColor),
+                typedArray.getColorOrThrow(R.styleable.DynamicGradientRecyclerView_bottomGradientColor)
             )
         } finally {
             typedArray.recycle()

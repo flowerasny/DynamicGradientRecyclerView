@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="DynamicGradientRecyclerView">
-        <attr name="topGradientColor" format="reference|string"/>
-        <attr name="bottomGradientColor" format="reference|string"/>
+        <attr name="topGradientColor" format="reference|color"/>
+        <attr name="bottomGradientColor" format="reference|color"/>
     </declare-styleable>
 </resources>
 
