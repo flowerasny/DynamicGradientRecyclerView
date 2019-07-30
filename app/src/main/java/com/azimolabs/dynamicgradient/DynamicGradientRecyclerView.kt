@@ -13,8 +13,9 @@ class DynamicGradientRecyclerView(
     attrs: AttributeSet
 ) : RecyclerView(context, attrs) {
 
-    private val positionedColorGenerator: PositionedColorGenerator
+    private var positionedColorGenerator: PositionedColorGenerator
     private var gradientId: Int? = null
+    private var viewsToBeColored = mutableMapOf<View, View>()
 
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.DynamicGradientRecyclerView)
@@ -35,22 +36,28 @@ class DynamicGradientRecyclerView(
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() = colorItemsBackgrounds()
         })
+
         this.adapter = adapter
         this.gradientId = gradientId
     }
 
+    override fun onViewAdded(child: View) {
+        gradientId?.let { child.findViewById<View>(it) }?.let { viewsToBeColored.put(child, it) }
+    }
+
+    override fun onViewRemoved(child: View) {
+        viewsToBeColored.remove(child)
+    }
+
     fun colorItemsBackgrounds() {
-        (0 until childCount).forEach { listPosition ->
-            val child = getChildAt(listPosition)
-            gradientId?.let {
-                child.findViewById<View>(it)?.background = GradientDrawable(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    intArrayOf(
-                        positionedColorGenerator.getColor(getScreenYPercentagePosition(child.top)),
-                        positionedColorGenerator.getColor(getScreenYPercentagePosition(child.bottom))
-                    )
-                ).also { it.cornerRadii = floatArrayOf(90F, 90F, 90F, 90F, 16F, 16F, 90F, 90F) }
-            }
+        viewsToBeColored.forEach {
+            it.value.background = GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                intArrayOf(
+                    positionedColorGenerator.getColor(getScreenYPercentagePosition(it.key.top)),
+                    positionedColorGenerator.getColor(getScreenYPercentagePosition(it.key.bottom))
+                )
+            ).also { it.cornerRadii = floatArrayOf(90F, 90F, 90F, 90F, 16F, 16F, 90F, 90F) }
         }
     }
 
